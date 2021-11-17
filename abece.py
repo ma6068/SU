@@ -1,0 +1,1 @@
+# df["sex"].replace({0: "male", 1: 'female'}, inplace=True)

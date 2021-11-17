@@ -8,4 +8,4 @@ Data:
 
 Links: 
 * https://www.hindawi.com/journals/misy/2018/3860146/
-* https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/
+* https://archive.ics.uci.edu/ml/datasets/heart+disease
