@@ -14,11 +14,7 @@ def writeData(lines):
                     if i != 13:
                         f.write(data[i] + ',')
                     else:
-                        target = int(data[i].replace('\n', ''))
-                        if target == 1 or target == 2 or target == 3 or target == 4:
-                            f.write('0\n')
-                        else:
-                            f.write('1\n')
+                        f.write(data[i])
 
 
 if __name__ == '__main__':
