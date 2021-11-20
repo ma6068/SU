@@ -87,4 +87,4 @@ if __name__ == '__main__':
     # RandomForest(x_train, y_train, x_test, y_test)
     # SVM(x_train, y_train, x_test, y_test)
     # KNN(x_train, y_train, x_test, y_test)
-    NeuralNetworks(x_train, y_train, x_test, y_test)
+    # NeuralNetworks(x_train, y_train, x_test, y_test)
