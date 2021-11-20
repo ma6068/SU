@@ -5,6 +5,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
+from sklearn.neighbors import KNeighborsClassifier
 
 
 def ChangeValues(tabela):
@@ -60,6 +61,14 @@ def SVM(X_train, Y_train, X_test, Y_test):
     print(acc, mae, rmse)
 
 
+def KNN(X_train, Y_train, X_test, Y_test):
+    model = KNeighborsClassifier(n_neighbors=20)
+    model.fit(X_train, Y_train)
+    Y_predicted = model.predict(X_test)
+    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
+    print(acc, mae, rmse)
+
+
 if __name__ == '__main__':
     table = pandas.read_csv("data.csv")
     table = ChangeValues(table)
@@ -68,3 +77,4 @@ if __name__ == '__main__':
     # DecisionTree(x_train, y_train, x_test, y_test)
     # RandomForest(x_train, y_train, x_test, y_test)
     # SVM(x_train, y_train, x_test, y_test)
+    # KNN(x_train, y_train, x_test, y_test)
