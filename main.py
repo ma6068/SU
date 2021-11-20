@@ -6,6 +6,7 @@ from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_er
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
 
 
 def ChangeValues(tabela):
@@ -69,6 +70,14 @@ def KNN(X_train, Y_train, X_test, Y_test):
     print(acc, mae, rmse)
 
 
+def NeuralNetworks(X_train, Y_train, X_test, Y_test):
+    model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
+    model.fit(X_train, Y_train)
+    Y_predicted = model.predict(X_test)
+    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
+    print(acc, mae, rmse)
+
+
 if __name__ == '__main__':
     table = pandas.read_csv("data.csv")
     table = ChangeValues(table)
@@ -78,3 +87,4 @@ if __name__ == '__main__':
     # RandomForest(x_train, y_train, x_test, y_test)
     # SVM(x_train, y_train, x_test, y_test)
     # KNN(x_train, y_train, x_test, y_test)
+    NeuralNetworks(x_train, y_train, x_test, y_test)
