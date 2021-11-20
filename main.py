@@ -42,7 +42,7 @@ def DecisionTree(X_train, Y_train, X_test, Y_test):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    return acc, mae, rmse
+    print(acc, mae, rmse)
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
@@ -72,7 +72,7 @@ def KNN(X_train, Y_train, X_test, Y_test):
 if __name__ == '__main__':
     table = pandas.read_csv("data.csv")
     table = ChangeValues(table)
-    dummy_table = pandas.get_dummies(table, drop_first=True)
+    dummy_table = pandas.get_dummies(table)
     x_train, y_train, x_test, y_test = CreateTrainAndTestSamples(dummy_table)
     # DecisionTree(x_train, y_train, x_test, y_test)
     # RandomForest(x_train, y_train, x_test, y_test)
