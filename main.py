@@ -49,7 +49,7 @@ def CalculateSensAndSpec(Y_test, Y_predicted):
     return round(sensitivity, 3), round(specificity, 3)
 
 
-def plotRocCurve(fpr, tpr, classifier):
+def PlotRocCurve(fpr, tpr, classifier):
     fig, ax = plt.subplots()
     ax.plot(fpr, tpr)
     plt.title(f'{classifier} - ROC curve')
@@ -60,7 +60,7 @@ def plotRocCurve(fpr, tpr, classifier):
     plt.savefig(f'images/Roc_{classifier}.png')
 
 
-def allTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
+def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
@@ -69,7 +69,7 @@ def allTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
     f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
-    plotRocCurve(fpr, tpr, classifier)
+    PlotRocCurve(fpr, tpr, classifier)
     auc_result = round(auc(fpr, tpr), 3)
     f.write(f'auc:{auc_result}\n')
     f.write('--------------------\n')
@@ -78,31 +78,31 @@ def allTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
 def DecisionTree(X_train, Y_train, X_test, Y_test):
     f.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
-    allTheWork(X_train, Y_train, X_test, Y_test, model, "Decision tree")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision tree")
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
     f.write('Random Forest\n')
     model = RandomForestClassifier(max_depth=4)
-    allTheWork(X_train, Y_train, X_test, Y_test, model, "Random forest")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random forest")
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
     f.write('SVM\n')
     model = svm.SVC(kernel='linear', random_state=0, probability=True)
-    allTheWork(X_train, Y_train, X_test, Y_test, model, "SVM")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "SVM")
 
 
 def KNN(X_train, Y_train, X_test, Y_test):
     f.write('KNN\n')
     model = KNeighborsClassifier(n_neighbors=20)
-    allTheWork(X_train, Y_train, X_test, Y_test, model, "KNN")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "KNN")
 
 
 def NeuralNetworks(X_train, Y_train, X_test, Y_test):
     f.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    allTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral Networks")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral Networks")
 
 
 if __name__ == '__main__':

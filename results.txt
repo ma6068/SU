@@ -4,9 +4,9 @@ sensitivity:0.7, specificity:0.767
 auc:0.823
 --------------------
 Random Forest
-acc:0.817, mae:0.183, rmse:0.428
-sensitivity:0.7, specificity:0.933
-auc:0.862
+acc:0.8, mae:0.2, rmse:0.447
+sensitivity:0.667, specificity:0.933
+auc:0.866
 --------------------
 SVM
 acc:0.833, mae:0.167, rmse:0.408
