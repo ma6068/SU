@@ -1,11 +1,11 @@
 def readData():
-    with open('cleveland_data') as cl:
+    with open('data/cleveland_data') as cl:
         lines = cl.readlines()
     return lines
 
 
 def writeData(lines):
-    with open('data.csv', 'w') as f:
+    with open('data/data.csv', 'w') as f:
         f.write('age,sex,cpt,rbp,sch,fbs,res,mhr,eia,opk,pes,vca,tha,target\n')
         for line in lines:
             data = line.split(',')

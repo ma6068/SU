@@ -10,6 +10,9 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 
 
+f = open("results.txt", "w")
+
+
 def ChangeValues(tabela):
     tabela["sex"].replace({0: 'female', 1: 'male'}, inplace=True)
     tabela["cpt"].replace({1: 'atypical angina', 2: 'typical angina', 3: 'asymptomatic', 4: 'nonanginal pain'}, inplace=True)
@@ -46,57 +49,64 @@ def CalculateSensAndSpec(Y_test, Y_predicted):
     return round(sensitivity, 3), round(specificity, 3)
 
 
-def plotRoc(fpr, tpr, classifier):
-    a = 1
+def plotRocCurve(fpr, tpr, classifier):
+    fig, ax = plt.subplots()
+    ax.plot(fpr, tpr)
+    plt.title(f'{classifier} - ROC curve')
+    plt.xlabel('False positive rate')
+    plt.ylabel('True positive rate')
+    plt.xlim([0.0, 1.01])
+    plt.ylim([0.0, 1.01])
+    plt.savefig(f'images/Roc_{classifier}.png')
 
 
-def allTheWork(X_train, Y_train, X_test, Y_test, model):
+def allTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
-    print(f'acc:{acc}, mae:{mae}, rmse:{rmse}')
+    f.write(f'acc:{acc}, mae:{mae}, rmse:{rmse}\n')
     sensitivity, specificity = CalculateSensAndSpec(Y_test, Y_predicted)
-    print(f'sensitivity:{sensitivity}, specificity:{specificity}')
+    f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
-    plotRoc(fpr, tpr, "")
+    plotRocCurve(fpr, tpr, classifier)
     auc_result = round(auc(fpr, tpr), 3)
-    print(f'auc:{auc_result}')
-    print('------------------')
+    f.write(f'auc:{auc_result}\n')
+    f.write('--------------------\n')
 
 
 def DecisionTree(X_train, Y_train, X_test, Y_test):
-    print('Decision tree')
+    f.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
-    allTheWork(X_train, Y_train, X_test, Y_test, model)
+    allTheWork(X_train, Y_train, X_test, Y_test, model, "Decision tree")
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
-    print('Random Forest')
+    f.write('Random Forest\n')
     model = RandomForestClassifier(max_depth=4)
-    allTheWork(X_train, Y_train, X_test, Y_test, model)
+    allTheWork(X_train, Y_train, X_test, Y_test, model, "Random forest")
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
-    print('SVM')
+    f.write('SVM\n')
     model = svm.SVC(kernel='linear', random_state=0, probability=True)
-    allTheWork(X_train, Y_train, X_test, Y_test, model)
+    allTheWork(X_train, Y_train, X_test, Y_test, model, "SVM")
 
 
 def KNN(X_train, Y_train, X_test, Y_test):
-    print('KNN')
+    f.write('KNN\n')
     model = KNeighborsClassifier(n_neighbors=20)
-    allTheWork(X_train, Y_train, X_test, Y_test, model)
+    allTheWork(X_train, Y_train, X_test, Y_test, model, "KNN")
 
 
 def NeuralNetworks(X_train, Y_train, X_test, Y_test):
-    print('Neural Networks')
+    f.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    allTheWork(X_train, Y_train, X_test, Y_test, model)
+    allTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral Networks")
 
 
 if __name__ == '__main__':
-    table = pandas.read_csv("data.csv")
+    table = pandas.read_csv("data/data.csv")
     table = ChangeValues(table)
     dummy_table = pandas.get_dummies(table)
     x_train, y_train, x_test, y_test = CreateTrainAndTestSamples(dummy_table)
@@ -105,3 +115,4 @@ if __name__ == '__main__':
     SVM(x_train, y_train, x_test, y_test)
     KNN(x_train, y_train, x_test, y_test)
     NeuralNetworks(x_train, y_train, x_test, y_test)
+    f.close()
