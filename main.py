@@ -1,8 +1,9 @@
 import pandas
 import math
+import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error
+from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error, confusion_matrix, roc_curve, auc
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
@@ -31,51 +32,67 @@ def CreateTrainAndTestSamples(tabela):
     return X_train, Y_train, X_test, Y_test
 
 
-def CalculateErrors(Y_test, Y_predict):
+def CalculateAccAndErrors(Y_test, Y_predict):
     acc = accuracy_score(Y_test, Y_predict)
     mae = mean_absolute_error(Y_test, Y_predict)
     rmse = math.sqrt(mean_squared_error(Y_test, Y_predict))
     return round(acc, 3), round(mae, 3), round(rmse, 3)
 
 
-def DecisionTree(X_train, Y_train, X_test, Y_test):
-    model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
+def CalculateSensAndSpec(Y_test, Y_predicted):
+    TN, FP, FN, TP = confusion_matrix(Y_test, Y_predicted).ravel()
+    sensitivity = TP / (TP + FN)
+    specificity = TN / (TN + FP)
+    return round(sensitivity, 3), round(specificity, 3)
+
+
+def plotRoc(fpr, tpr, classifier):
+    a = 1
+
+
+def allTheWork(X_train, Y_train, X_test, Y_test, model):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
-    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    print(acc, mae, rmse)
+    acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
+    print(f'acc:{acc}, mae:{mae}, rmse:{rmse}')
+    sensitivity, specificity = CalculateSensAndSpec(Y_test, Y_predicted)
+    print(f'sensitivity:{sensitivity}, specificity:{specificity}')
+    Y_pred_prob = model.predict_proba(X_test)[:, 1]
+    fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
+    plotRoc(fpr, tpr, "")
+    auc_result = round(auc(fpr, tpr), 3)
+    print(f'auc:{auc_result}')
+    print('------------------')
+
+
+def DecisionTree(X_train, Y_train, X_test, Y_test):
+    print('Decision tree')
+    model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
+    allTheWork(X_train, Y_train, X_test, Y_test, model)
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
+    print('Random Forest')
     model = RandomForestClassifier(max_depth=4)
-    model.fit(X_train, Y_train)
-    Y_predicted = model.predict(X_test)
-    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    print(acc, mae, rmse)
+    allTheWork(X_train, Y_train, X_test, Y_test, model)
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
+    print('SVM')
     model = svm.SVC(kernel='linear', random_state=0, probability=True)
-    model.fit(X_train, Y_train)
-    Y_predicted = model.predict(X_test)
-    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    print(acc, mae, rmse)
+    allTheWork(X_train, Y_train, X_test, Y_test, model)
 
 
 def KNN(X_train, Y_train, X_test, Y_test):
+    print('KNN')
     model = KNeighborsClassifier(n_neighbors=20)
-    model.fit(X_train, Y_train)
-    Y_predicted = model.predict(X_test)
-    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    print(acc, mae, rmse)
+    allTheWork(X_train, Y_train, X_test, Y_test, model)
 
 
 def NeuralNetworks(X_train, Y_train, X_test, Y_test):
+    print('Neural Networks')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    model.fit(X_train, Y_train)
-    Y_predicted = model.predict(X_test)
-    acc, mae, rmse = CalculateErrors(Y_test, Y_predicted)
-    print(acc, mae, rmse)
+    allTheWork(X_train, Y_train, X_test, Y_test, model)
 
 
 if __name__ == '__main__':
@@ -83,8 +100,8 @@ if __name__ == '__main__':
     table = ChangeValues(table)
     dummy_table = pandas.get_dummies(table)
     x_train, y_train, x_test, y_test = CreateTrainAndTestSamples(dummy_table)
-    # DecisionTree(x_train, y_train, x_test, y_test)
-    # RandomForest(x_train, y_train, x_test, y_test)
-    # SVM(x_train, y_train, x_test, y_test)
-    # KNN(x_train, y_train, x_test, y_test)
-    # NeuralNetworks(x_train, y_train, x_test, y_test)
+    DecisionTree(x_train, y_train, x_test, y_test)
+    RandomForest(x_train, y_train, x_test, y_test)
+    SVM(x_train, y_train, x_test, y_test)
+    KNN(x_train, y_train, x_test, y_test)
+    NeuralNetworks(x_train, y_train, x_test, y_test)
