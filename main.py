@@ -84,22 +84,22 @@ def PlotTree(model, X_train, Y_train, filename):
     Y_train_str[Y_train_str == '1'] = 'sick'
     class_names = Y_train_str.values
     feature_names = [i for i in X_train.columns]
-    _ = export_graphviz(model, out_file='dot/decision_tree.dot',
+    _ = export_graphviz(model, out_file='dot/' + filename + '.dot',
                         class_names=class_names,
                         feature_names=feature_names,
                         rounded=True, proportion=True,
                         label='root', precision=2,
                         filled=True)
     os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename, '-Gdpi=600'])
-    Image(filename='images/' + filename)
+    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename + '.png', '-Gdpi=600'])
+    Image(filename='images/' + filename + '.png')
 
 
 def DecisionTree(X_train, Y_train, X_test, Y_test):
     f.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
     AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree")
-    PlotTree(model, X_train, Y_train, "decision_tree.png")
+    PlotTree(model, X_train, Y_train, "decision_tree")
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
@@ -107,7 +107,7 @@ def RandomForest(X_train, Y_train, X_test, Y_test):
     model = RandomForestClassifier(max_depth=4)
     AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest")
     estimator = model.estimators_[1]
-    PlotTree(estimator, X_train, Y_train, "random_forest_tree.png")
+    PlotTree(estimator, X_train, Y_train, "random_forest_tree")
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
