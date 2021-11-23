@@ -106,6 +106,8 @@ def RandomForest(X_train, Y_train, X_test, Y_test):
     f.write('Random Forest\n')
     model = RandomForestClassifier(max_depth=4)
     AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest")
+    estimator = model.estimators_[1]
+    PlotTree(estimator, X_train, Y_train, "random_forest_tree.png")
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
