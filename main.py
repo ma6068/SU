@@ -1,21 +1,24 @@
 import pandas
 import math
+import os
 import matplotlib.pyplot as plt
+from subprocess import call
 from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error, confusion_matrix, roc_curve, auc
 from sklearn.ensemble import RandomForestClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-
+from IPython.display import Image
 
 f = open("results.txt", "w")
 
 
 def ChangeValues(tabela):
     tabela["sex"].replace({0: 'female', 1: 'male'}, inplace=True)
-    tabela["cpt"].replace({1: 'atypical angina', 2: 'typical angina', 3: 'asymptomatic', 4: 'nonanginal pain'}, inplace=True)
+    tabela["cpt"].replace({1: 'atypical angina', 2: 'typical angina', 3: 'asymptomatic', 4: 'nonanginal pain'},
+                          inplace=True)
     tabela["fbs"].replace({0: '< 120 mg/dl', 1: '> 120 mg/dl'}, inplace=True)
     tabela["res"].replace({0: 'normal', 1: 'having ST-T', 2: 'hypertrophy'}, inplace=True)
     tabela["eia"].replace({0: 'no', 1: 'yes'}, inplace=True)
@@ -75,16 +78,34 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
     f.write('--------------------\n')
 
 
+def PlotTree(model, X_train, Y_train, filename):
+    Y_train_str = Y_train.astype('str')
+    Y_train_str[Y_train_str == '0'] = 'healthy'
+    Y_train_str[Y_train_str == '1'] = 'sick'
+    class_names = Y_train_str.values
+    feature_names = [i for i in X_train.columns]
+    _ = export_graphviz(model, out_file='dot/decision_tree.dot',
+                        class_names=class_names,
+                        feature_names=feature_names,
+                        rounded=True, proportion=True,
+                        label='root', precision=2,
+                        filled=True)
+    os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
+    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename, '-Gdpi=600'])
+    Image(filename='images/' + filename)
+
+
 def DecisionTree(X_train, Y_train, X_test, Y_test):
     f.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision tree")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree")
+    PlotTree(model, X_train, Y_train, "decision_tree.png")
 
 
 def RandomForest(X_train, Y_train, X_test, Y_test):
     f.write('Random Forest\n')
     model = RandomForestClassifier(max_depth=4)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random forest")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest")
 
 
 def SVM(X_train, Y_train, X_test, Y_test):
@@ -102,7 +123,7 @@ def KNN(X_train, Y_train, X_test, Y_test):
 def NeuralNetworks(X_train, Y_train, X_test, Y_test):
     f.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral Networks")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks")
 
 
 if __name__ == '__main__':
