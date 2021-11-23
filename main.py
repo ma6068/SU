@@ -92,7 +92,7 @@ def PlotTree(model, X_train, Y_train, filename):
                         filled=True)
     os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
     call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename, '-Gdpi=600'])
-    Image(filename='images/' + filename, width = 600, height = 300)
+    Image(filename='images/' + filename)
 
 
 def DecisionTree(X_train, Y_train, X_test, Y_test):
