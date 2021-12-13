@@ -1,6 +1,7 @@
 import pandas
 import math
 import os
+import random
 import matplotlib.pyplot as plt
 from subprocess import call
 from sklearn.model_selection import train_test_split
@@ -29,15 +30,6 @@ def ChangeValues(tabela):
     return tabela
 
 
-def CreateTrainAndTestSamples(tabela):
-    train, test = train_test_split(tabela, test_size=0.2, random_state=0)
-    Y_train = train['target']
-    Y_test = test['target']
-    X_train = train.drop(['target'], axis=1)
-    X_test = test.drop(['target'], axis=1)
-    return X_train, Y_train, X_test, Y_test
-
-
 def CalculateAccAndErrors(Y_test, Y_predict):
     acc = accuracy_score(Y_test, Y_predict)
     mae = mean_absolute_error(Y_test, Y_predict)
@@ -52,7 +44,7 @@ def CalculateSensAndSpec(Y_test, Y_predicted):
     return round(sensitivity, 3), round(specificity, 3)
 
 
-def PlotRocCurve(fpr, tpr, classifier):
+def PlotRocCurve(fpr, tpr, classifier, index):
     fig, ax = plt.subplots()
     ax.plot(fpr, tpr)
     plt.title(f'{classifier} - ROC curve')
@@ -60,10 +52,11 @@ def PlotRocCurve(fpr, tpr, classifier):
     plt.ylabel('True positive rate')
     plt.xlim([0.0, 1.01])
     plt.ylim([0.0, 1.01])
-    plt.savefig(f'images/Roc_{classifier}.png')
+    plt.savefig(f'images/Roc_{classifier}_{index}.png')
 
 
-def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
+def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
+    f.write(f'Iteracija: {index}\n')
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
@@ -72,13 +65,13 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier):
     f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
-    PlotRocCurve(fpr, tpr, classifier)
+    PlotRocCurve(fpr, tpr, classifier, index)
     auc_result = round(auc(fpr, tpr), 3)
     f.write(f'auc:{auc_result}\n')
     f.write('--------------------\n')
 
 
-def PlotTree(model, X_train, Y_train, filename):
+def PlotTree(model, X_train, Y_train, filename, index):
     Y_train_str = Y_train.astype('str')
     Y_train_str[Y_train_str == '0'] = 'healthy'
     Y_train_str[Y_train_str == '1'] = 'sick'
@@ -91,51 +84,76 @@ def PlotTree(model, X_train, Y_train, filename):
                         label='root', precision=2,
                         filled=True)
     os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename + '.png', '-Gdpi=600'])
-    Image(filename='images/' + filename + '.png')
+    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename + '_' + str(index) + '.png', '-Gdpi=600'])
+    Image(filename='images/' + filename + '_' + str(index) + '.png')
 
 
-def DecisionTree(X_train, Y_train, X_test, Y_test):
+def DecisionTree(X_train, Y_train, X_test, Y_test, index):
     f.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree")
-    PlotTree(model, X_train, Y_train, "decision_tree")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree", index)
+    PlotTree(model, X_train, Y_train, "decision_tree", index)
 
 
-def RandomForest(X_train, Y_train, X_test, Y_test):
+def RandomForest(X_train, Y_train, X_test, Y_test, index):
     f.write('Random Forest\n')
     model = RandomForestClassifier(max_depth=4)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest", index)
     estimator = model.estimators_[1]
-    PlotTree(estimator, X_train, Y_train, "random_forest_tree")
+    PlotTree(estimator, X_train, Y_train, "random_forest_tree", index)
 
 
-def SVM(X_train, Y_train, X_test, Y_test):
+def SVM(X_train, Y_train, X_test, Y_test, index):
     f.write('SVM\n')
     model = svm.SVC(kernel='linear', random_state=0, probability=True)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "SVM")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "SVM", index)
 
 
-def KNN(X_train, Y_train, X_test, Y_test):
+def KNN(X_train, Y_train, X_test, Y_test, index):
     f.write('KNN\n')
     model = KNeighborsClassifier(n_neighbors=20)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "KNN")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "KNN", index)
 
 
-def NeuralNetworks(X_train, Y_train, X_test, Y_test):
+def NeuralNetworks(X_train, Y_train, X_test, Y_test, index):
     f.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks")
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks", index)
+
+
+def CreateTrainAndTest(tabela, index, brTestni, redovi):
+    X_train = tabela.copy()
+    X_test = tabela.copy()
+    for a in range(len(tabela)):
+        # spaga vo testni => izbrisi go od ucni
+        if index * brTestni <= a < index * brTestni + brTestni:
+            X_train.drop(labels=redovi[a], inplace=True)
+        # spaga vo ucni => izbrisi go od testni
+        else:
+            X_test.drop(labels=redovi[a], inplace=True)
+    Y_train = X_train['target'].copy()
+    Y_test = X_test['target'].copy()
+    X_train.drop(['target'], axis=1, inplace=True)
+    X_test.drop(['target'], axis=1, inplace=True)
+    return X_train, Y_train, X_test, Y_test
 
 
 if __name__ == '__main__':
+    # citame podatoci i gi spremame za obrabotka
     table = pandas.read_csv("data/data.csv")
     table = ChangeValues(table)
     dummy_table = pandas.get_dummies(table)
-    x_train, y_train, x_test, y_test = CreateTrainAndTestSamples(dummy_table)
-    DecisionTree(x_train, y_train, x_test, y_test)
-    RandomForest(x_train, y_train, x_test, y_test)
-    SVM(x_train, y_train, x_test, y_test)
-    KNN(x_train, y_train, x_test, y_test)
-    NeuralNetworks(x_train, y_train, x_test, y_test)
+    # imame k-kratno proveruvanje, gi delime podatocite na ucni(80%) i testni(20%)
+    redovi = list(range(0, len(dummy_table)))
+    random.Random(0).shuffle(redovi)
+    brojUcni = math.floor(len(redovi) * 0.8)
+    brojTestni = len(redovi) - brojUcni
+    brojIteracii = math.ceil(len(dummy_table) / brojTestni)
+    for i in range(brojIteracii):
+        x_train, y_train, x_test, y_test = CreateTrainAndTest(dummy_table, i, brojTestni, redovi)
+        DecisionTree(x_train, y_train, x_test, y_test, i)
+        RandomForest(x_train, y_train, x_test, y_test, i)
+        SVM(x_train, y_train, x_test, y_test, i)
+        KNN(x_train, y_train, x_test, y_test, i)
+        NeuralNetworks(x_train, y_train, x_test, y_test, i)
     f.close()
