@@ -2,9 +2,9 @@ import pandas
 import math
 import os
 import random
+import statistics
 import matplotlib.pyplot as plt
 from subprocess import call
-from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, export_graphviz
 from sklearn.metrics import accuracy_score, mean_absolute_error, mean_squared_error, confusion_matrix, roc_curve, auc
 from sklearn.ensemble import RandomForestClassifier
@@ -55,12 +55,27 @@ def PlotRocCurve(fpr, tpr, classifier, index):
     plt.savefig(f'images/Roc_{classifier}_{index}.png')
 
 
+def CalculateStandardDeviation(Y_test, Y_predicted):
+    razliki = []
+    yt = Y_test.values.tolist()
+    yp = list(Y_predicted)
+    for a in range(len(yt)):
+        if yt[a] == yp[a]:
+            razliki.append(1)
+        else:
+            razliki.append(0)
+    sd = statistics.stdev(razliki)
+    sd = sd / math.sqrt(len(razliki))
+    return round(sd, 3)
+
+
 def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
     f.write(f'Iteracija: {index}\n')
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
-    f.write(f'acc:{acc}, mae:{mae}, rmse:{rmse}\n')
+    sd = CalculateStandardDeviation(Y_test, Y_predicted)
+    f.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
     sensitivity, specificity = CalculateSensAndSpec(Y_test, Y_predicted)
     f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
@@ -70,6 +85,7 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
     f.write(f'auc:{auc_result}\n')
     f.write('--------------------\n')
     acc_table.append((acc, classifier))
+    sd_table.append((sd, classifier))
     sensitivity_table.append((sensitivity, classifier))
     specificity_table.append((specificity, classifier))
     auc_table.append((auc_result, classifier))
@@ -148,9 +164,11 @@ def IzracunajPovprecje(tabela):
     sv = 0
     kn = 0
     nn = 0
+    counter = 0
     for terka in tabela:
         if terka[1] == 'Decision_tree':
             dt += terka[0]
+            counter = counter + 1
         elif terka[1] == 'Random_forest':
             rf += terka[0]
         elif terka[1] == 'SVM':
@@ -159,11 +177,11 @@ def IzracunajPovprecje(tabela):
             kn += terka[0]
         elif terka[1] == 'Neutral_Networks':
             nn += terka[0]
-    dt = dt / 5
-    rf = rf / 5
-    sv = sv / 5
-    kn = kn / 5
-    nn = nn / 5
+    dt = dt / counter
+    rf = rf / counter
+    sv = sv / counter
+    kn = kn / counter
+    nn = nn / counter
     return round(dt, 3), round(rf, 3), round(sv, 3), round(kn, 3), round(nn, 3)
 
 
@@ -171,6 +189,9 @@ def IzracunajIIspisiPovprecje():
     f.write('Average results\n')
     dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
     f.write(f'Accuracy:\n')
+    f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+    dt, rf, sv, kn, nn = IzracunajPovprecje(sd_table)
+    f.write(f'Standard deviation:\n')
     f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
     dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
     f.write(f'Sensitivity:\n')
@@ -183,8 +204,8 @@ def IzracunajIIspisiPovprecje():
     f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
 
 
-
 acc_table = []
+sd_table = []
 sensitivity_table = []
 specificity_table = []
 auc_table = []
