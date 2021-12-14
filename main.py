@@ -69,6 +69,10 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
     auc_result = round(auc(fpr, tpr), 3)
     f.write(f'auc:{auc_result}\n')
     f.write('--------------------\n')
+    acc_table.append((acc, classifier))
+    sensitivity_table.append((sensitivity, classifier))
+    specificity_table.append((specificity, classifier))
+    auc_table.append((auc_result, classifier))
 
 
 def PlotTree(model, X_train, Y_train, filename, index):
@@ -138,6 +142,54 @@ def CreateTrainAndTest(tabela, index, brTestni, redovi):
     return X_train, Y_train, X_test, Y_test
 
 
+def IzracunajPovprecje(tabela):
+    dt = 0
+    rf = 0
+    sv = 0
+    kn = 0
+    nn = 0
+    for terka in tabela:
+        if terka[1] == 'Decision_tree':
+            dt += terka[0]
+        elif terka[1] == 'Random_forest':
+            rf += terka[0]
+        elif terka[1] == 'SVM':
+            sv += terka[0]
+        elif terka[1] == 'KNN':
+            kn += terka[0]
+        elif terka[1] == 'Neutral_Networks':
+            nn += terka[0]
+    dt = dt / 5
+    rf = rf / 5
+    sv = sv / 5
+    kn = kn / 5
+    nn = nn / 5
+    return round(dt, 3), round(rf, 3), round(sv, 3), round(kn, 3), round(nn, 3)
+
+
+def IzracunajIIspisiPovprecje():
+    f.write('Average results\n')
+    dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
+    f.write(f'Accuracy:\n')
+    f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+    dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
+    f.write(f'Sensitivity:\n')
+    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+    dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
+    f.write(f'Specificity:\n')
+    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+    dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
+    f.write(f'AUC score:\n')
+    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+
+
+
+acc_table = []
+sensitivity_table = []
+specificity_table = []
+auc_table = []
+
+
 if __name__ == '__main__':
     # citame podatoci i gi spremame za obrabotka
     table = pandas.read_csv("data/data.csv")
@@ -156,4 +208,5 @@ if __name__ == '__main__':
         SVM(x_train, y_train, x_test, y_test, i)
         KNN(x_train, y_train, x_test, y_test, i)
         NeuralNetworks(x_train, y_train, x_test, y_test, i)
+    IzracunajIIspisiPovprecje()
     f.close()

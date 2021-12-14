@@ -6,9 +6,9 @@ auc:0.802
 --------------------
 Random Forest
 Iteracija: 0
-acc:0.85, mae:0.15, rmse:0.387
-sensitivity:0.846, specificity:0.853
-auc:0.948
+acc:0.833, mae:0.167, rmse:0.408
+sensitivity:0.846, specificity:0.824
+auc:0.946
 --------------------
 SVM
 Iteracija: 0
@@ -38,7 +38,7 @@ Random Forest
 Iteracija: 1
 acc:0.917, mae:0.083, rmse:0.289
 sensitivity:0.889, specificity:0.939
-auc:0.97
+auc:0.969
 --------------------
 SVM
 Iteracija: 1
@@ -66,9 +66,9 @@ auc:0.695
 --------------------
 Random Forest
 Iteracija: 2
-acc:0.817, mae:0.183, rmse:0.428
-sensitivity:0.69, specificity:0.935
-auc:0.892
+acc:0.8, mae:0.2, rmse:0.447
+sensitivity:0.655, specificity:0.935
+auc:0.904
 --------------------
 SVM
 Iteracija: 2
@@ -96,9 +96,9 @@ auc:0.781
 --------------------
 Random Forest
 Iteracija: 3
-acc:0.783, mae:0.217, rmse:0.465
-sensitivity:0.688, specificity:0.893
-auc:0.912
+acc:0.767, mae:0.233, rmse:0.483
+sensitivity:0.688, specificity:0.857
+auc:0.916
 --------------------
 SVM
 Iteracija: 3
@@ -126,9 +126,9 @@ auc:0.777
 --------------------
 Random Forest
 Iteracija: 4
-acc:0.825, mae:0.175, rmse:0.419
-sensitivity:0.87, specificity:0.794
-auc:0.831
+acc:0.807, mae:0.193, rmse:0.439
+sensitivity:0.87, specificity:0.765
+auc:0.83
 --------------------
 SVM
 Iteracija: 4
@@ -148,3 +148,12 @@ acc:0.807, mae:0.193, rmse:0.439
 sensitivity:0.783, specificity:0.824
 auc:0.853
 --------------------
+Average results
+Accuracy:
+DT:0.75  RF:0.825  SVM:0.835  KNN:0.66  NN:0.838
+Sensitivity:
+DT: 0.723  RF:0.79  SVM:0.772  KNN:0.54  NN:0.798
+Specificity:
+DT: 0.784  RF:0.864  SVM:0.896  KNN:0.763  NN:0.878
+AUC score:
+DT: 0.794  RF:0.913  SVM:0.912  KNN:0.705  NN:0.906
