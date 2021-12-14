@@ -269,6 +269,15 @@ def helper(brojIteracii, dummy_table, brojTestni, redovi, atributi):
     IzracunajIIspisiPovprecje(atributi)
 
 
+def SkratiAtributi(tabela):
+    site = ['age', 'sex', 'cpt', 'rbp', 'sch', 'fbs', 'res', 'mhr', 'eia', 'opk', 'pes', 'vca', 'tha', 'target']
+    arr = ['age', 'sex', 'cpt', 'mhr', 'eia', 'target']
+    for el in site:
+        if el not in arr:
+            tabela.drop([el], axis=1, inplace=True)
+    return tabela
+
+
 if __name__ == '__main__':
     # citame podatoci i gi spremame za obrabotka
     table = pandas.read_csv("data/data.csv")
@@ -280,7 +289,7 @@ if __name__ == '__main__':
     brojUcni = math.floor(len(redovi) * 0.8)
     brojTestni = len(redovi) - brojUcni
     brojIteracii = math.ceil(len(dummy_table) / brojTestni)
-    helper(brojIteracii, dummy_table, brojTestni, redovi, "all")
+    # helper(brojIteracii, dummy_table, brojTestni, redovi, "all")
     f.close()
     # k-kratno preveruvanje na pomalku atributi
     acc_table = []
@@ -288,5 +297,7 @@ if __name__ == '__main__':
     sensitivity_table = []
     specificity_table = []
     auc_table = []
-    helper(brojIteracii, dummy_table, brojTestni, redovi, "not_all")
+    table2 = SkratiAtributi(table)
+    dummy_table2 = pandas.get_dummies(table2)
+    helper(brojIteracii, dummy_table2, brojTestni, redovi, "not_all")
     f2.close()
