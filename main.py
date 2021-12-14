@@ -14,6 +14,13 @@ from sklearn.neural_network import MLPClassifier
 from IPython.display import Image
 
 f = open("results.txt", "w")
+f2 = open("results2.txt", "w")
+
+acc_table = []
+sd_table = []
+sensitivity_table = []
+specificity_table = []
+auc_table = []
 
 
 def ChangeValues(tabela):
@@ -44,7 +51,7 @@ def CalculateSensAndSpec(Y_test, Y_predicted):
     return round(sensitivity, 3), round(specificity, 3)
 
 
-def PlotRocCurve(fpr, tpr, classifier, index):
+def PlotRocCurve(fpr, tpr, classifier, index, atributi):
     fig, ax = plt.subplots()
     ax.plot(fpr, tpr)
     plt.title(f'{classifier} - ROC curve')
@@ -52,7 +59,10 @@ def PlotRocCurve(fpr, tpr, classifier, index):
     plt.ylabel('True positive rate')
     plt.xlim([0.0, 1.01])
     plt.ylim([0.0, 1.01])
-    plt.savefig(f'images/Roc_{classifier}_{index}.png')
+    if atributi == "all":
+        plt.savefig(f'images/Roc_{classifier}_{index}.png')
+    else:
+        plt.savefig(f'images2/Roc_{classifier}_{index}.png')
 
 
 def CalculateStandardDeviation(Y_test, Y_predicted):
@@ -69,21 +79,28 @@ def CalculateStandardDeviation(Y_test, Y_predicted):
     return round(sd, 3)
 
 
-def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
-    f.write(f'Iteracija: {index}\n')
+def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index, atributi):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
     sd = CalculateStandardDeviation(Y_test, Y_predicted)
-    f.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
     sensitivity, specificity = CalculateSensAndSpec(Y_test, Y_predicted)
-    f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
-    PlotRocCurve(fpr, tpr, classifier, index)
+    PlotRocCurve(fpr, tpr, classifier, index, atributi)
     auc_result = round(auc(fpr, tpr), 3)
-    f.write(f'auc:{auc_result}\n')
-    f.write('--------------------\n')
+    if atributi == "all":
+        f.write(f'Iteracija: {index}\n')
+        f.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
+        f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
+        f.write(f'auc:{auc_result}\n')
+        f.write('--------------------\n')
+    else:
+        f2.write(f'Iteracija: {index}\n')
+        f2.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
+        f2.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
+        f2.write(f'auc:{auc_result}\n')
+        f2.write('--------------------\n')
     acc_table.append((acc, classifier))
     sd_table.append((sd, classifier))
     sensitivity_table.append((sensitivity, classifier))
@@ -91,7 +108,7 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index):
     auc_table.append((auc_result, classifier))
 
 
-def PlotTree(model, X_train, Y_train, filename, index):
+def PlotTree(model, X_train, Y_train, filename, index, atributi):
     Y_train_str = Y_train.astype('str')
     Y_train_str[Y_train_str == '0'] = 'healthy'
     Y_train_str[Y_train_str == '1'] = 'sick'
@@ -104,41 +121,60 @@ def PlotTree(model, X_train, Y_train, filename, index):
                         label='root', precision=2,
                         filled=True)
     os.environ["PATH"] += os.pathsep + 'C:/Program Files/Graphviz/bin'
-    call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename + '_' + str(index) + '.png', '-Gdpi=600'])
-    Image(filename='images/' + filename + '_' + str(index) + '.png')
+    if atributi == "all":
+        call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images/' + filename + '_' + str(index) + '.png', '-Gdpi=600'])
+        Image(filename='images/' + filename + '_' + str(index) + '.png')
+    else:
+        call(['dot', '-Tpng', 'dot/decision_tree.dot', '-o', 'images2/' + filename + '_' + str(index) + '.png', '-Gdpi=600'])
+        Image(filename='images2/' + filename + '_' + str(index) + '.png')
 
 
-def DecisionTree(X_train, Y_train, X_test, Y_test, index):
-    f.write('Decision tree\n')
+def DecisionTree(X_train, Y_train, X_test, Y_test, index, atributi):
+    if atributi == "all":
+        f.write('Decision tree\n')
+    else:
+        f2.write('Decision tree\n')
     model = DecisionTreeClassifier(max_leaf_nodes=10, random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree", index)
-    PlotTree(model, X_train, Y_train, "decision_tree", index)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Decision_tree", index, atributi)
+    PlotTree(model, X_train, Y_train, "decision_tree", index, atributi)
 
 
-def RandomForest(X_train, Y_train, X_test, Y_test, index):
-    f.write('Random Forest\n')
-    model = RandomForestClassifier(max_depth=4)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest", index)
+def RandomForest(X_train, Y_train, X_test, Y_test, index, atributi):
+    if atributi == "all":
+        f.write('Random Forest\n')
+    else:
+        f2.write('Random Forest\n')
+    model = RandomForestClassifier(max_depth=4, random_state=0)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Random_forest", index, atributi)
     estimator = model.estimators_[1]
-    PlotTree(estimator, X_train, Y_train, "random_forest_tree", index)
+    PlotTree(estimator, X_train, Y_train, "random_forest_tree", index, atributi)
 
 
-def SVM(X_train, Y_train, X_test, Y_test, index):
-    f.write('SVM\n')
+def SVM(X_train, Y_train, X_test, Y_test, index, atributi):
+    if atributi == "all":
+        f.write('SVM\n')
+    else:
+        f2.write('SVM\n')
     model = svm.SVC(kernel='linear', random_state=0, probability=True)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "SVM", index)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "SVM", index, atributi)
 
 
-def KNN(X_train, Y_train, X_test, Y_test, index):
-    f.write('KNN\n')
+def KNN(X_train, Y_train, X_test, Y_test, index, atributi):
+    if atributi == "all":
+        f.write('KNN\n')
+    else:
+        f2.write('KNN\n')
     model = KNeighborsClassifier(n_neighbors=20)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "KNN", index)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "KNN", index, atributi)
 
 
-def NeuralNetworks(X_train, Y_train, X_test, Y_test, index):
-    f.write('Neural Networks\n')
+def NeuralNetworks(X_train, Y_train, X_test, Y_test, index, atributi):
+    if atributi == "all":
+        f.write('Neural Networks\n')
+    else:
+        f2.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks", index)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks", index, atributi)
 
 
 def CreateTrainAndTest(tabela, index, brTestni, redovi):
@@ -185,30 +221,52 @@ def IzracunajPovprecje(tabela):
     return round(dt, 3), round(rf, 3), round(sv, 3), round(kn, 3), round(nn, 3)
 
 
-def IzracunajIIspisiPovprecje():
-    f.write('Average results\n')
-    dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
-    f.write(f'Accuracy:\n')
-    f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
-    dt, rf, sv, kn, nn = IzracunajPovprecje(sd_table)
-    f.write(f'Standard deviation:\n')
-    f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
-    dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
-    f.write(f'Sensitivity:\n')
-    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
-    dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
-    f.write(f'Specificity:\n')
-    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
-    dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
-    f.write(f'AUC score:\n')
-    f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+def IzracunajIIspisiPovprecje(atributi):
+    if atributi == "all":
+        f.write('Average results\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
+        f.write(f'Accuracy:\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(sd_table)
+        f.write(f'Standard deviation:\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
+        f.write(f'Sensitivity:\n')
+        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
+        f.write(f'Specificity:\n')
+        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
+        f.write(f'AUC score:\n')
+        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+    else:
+        f2.write('Average results\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
+        f2.write(f'Accuracy:\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(sd_table)
+        f2.write(f'Standard deviation:\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
+        f2.write(f'Sensitivity:\n')
+        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
+        f2.write(f'Specificity:\n')
+        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
+        f2.write(f'AUC score:\n')
+        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
 
 
-acc_table = []
-sd_table = []
-sensitivity_table = []
-specificity_table = []
-auc_table = []
+def helper(brojIteracii, dummy_table, brojTestni, redovi, atributi):
+    for i in range(brojIteracii):
+        x_train, y_train, x_test, y_test = CreateTrainAndTest(dummy_table, i, brojTestni, redovi)
+        DecisionTree(x_train, y_train, x_test, y_test, i, atributi)
+        RandomForest(x_train, y_train, x_test, y_test, i, atributi)
+        SVM(x_train, y_train, x_test, y_test, i, atributi)
+        KNN(x_train, y_train, x_test, y_test, i, atributi)
+        NeuralNetworks(x_train, y_train, x_test, y_test, i, atributi)
+    IzracunajIIspisiPovprecje(atributi)
 
 
 if __name__ == '__main__':
@@ -222,12 +280,13 @@ if __name__ == '__main__':
     brojUcni = math.floor(len(redovi) * 0.8)
     brojTestni = len(redovi) - brojUcni
     brojIteracii = math.ceil(len(dummy_table) / brojTestni)
-    for i in range(brojIteracii):
-        x_train, y_train, x_test, y_test = CreateTrainAndTest(dummy_table, i, brojTestni, redovi)
-        DecisionTree(x_train, y_train, x_test, y_test, i)
-        RandomForest(x_train, y_train, x_test, y_test, i)
-        SVM(x_train, y_train, x_test, y_test, i)
-        KNN(x_train, y_train, x_test, y_test, i)
-        NeuralNetworks(x_train, y_train, x_test, y_test, i)
-    IzracunajIIspisiPovprecje()
+    helper(brojIteracii, dummy_table, brojTestni, redovi, "all")
     f.close()
+    # k-kratno preveruvanje na pomalku atributi
+    acc_table = []
+    sd_table = []
+    sensitivity_table = []
+    specificity_table = []
+    auc_table = []
+    helper(brojIteracii, dummy_table, brojTestni, redovi, "not_all")
+    f2.close()
