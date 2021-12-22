@@ -12,6 +12,9 @@ from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from IPython.display import Image
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.metrics import brier_score_loss
+
 
 f = open("results.txt", "w")
 f2 = open("results2.txt", "w")
@@ -21,6 +24,7 @@ sd_table = []
 sensitivity_table = []
 specificity_table = []
 auc_table = []
+brier_table = []
 
 
 def ChangeValues(tabela):
@@ -79,11 +83,17 @@ def CalculateStandardDeviation(Y_test, Y_predicted):
     return round(sd, 3)
 
 
+def CalculateBrier(Y_test, Y_predicted_probability):
+    brier = brier_score_loss(Y_test, Y_predicted_probability)
+    return round(brier, 3)
+
+
 def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index, atributi):
     model.fit(X_train, Y_train)
     Y_predicted = model.predict(X_test)
     acc, mae, rmse = CalculateAccAndErrors(Y_test, Y_predicted)
     sd = CalculateStandardDeviation(Y_test, Y_predicted)
+    brier = CalculateBrier(Y_test, model.predict_proba(X_test)[:, 1])
     sensitivity, specificity = CalculateSensAndSpec(Y_test, Y_predicted)
     Y_pred_prob = model.predict_proba(X_test)[:, 1]
     fpr, tpr, thresholds = roc_curve(Y_test, Y_pred_prob)
@@ -92,12 +102,14 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index, atrib
     if atributi == "all":
         f.write(f'Iteracija: {index}\n')
         f.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
+        f.write(f'brier: {brier}\n')
         f.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
         f.write(f'auc:{auc_result}\n')
         f.write('--------------------\n')
     else:
         f2.write(f'Iteracija: {index}\n')
         f2.write(f'acc:{acc}, sd:{sd}, mae:{mae}, rmse:{rmse}\n')
+        f2.write(f'brier: {brier}\n')
         f2.write(f'sensitivity:{sensitivity}, specificity:{specificity}\n')
         f2.write(f'auc:{auc_result}\n')
         f2.write('--------------------\n')
@@ -106,6 +118,7 @@ def AllTheWork(X_train, Y_train, X_test, Y_test, model, classifier, index, atrib
     sensitivity_table.append((sensitivity, classifier))
     specificity_table.append((specificity, classifier))
     auc_table.append((auc_result, classifier))
+    brier_table.append((brier, classifier))
 
 
 def PlotTree(model, X_train, Y_train, filename, index, atributi):
@@ -239,6 +252,10 @@ def IzracunajIIspisiPovprecje(atributi):
         dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
         f.write(f'AUC score:\n')
         f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(brier_table)
+        f.write(f'Brier score:\n')
+        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+
     else:
         f2.write('Average results\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(acc_table)
@@ -255,6 +272,9 @@ def IzracunajIIspisiPovprecje(atributi):
         f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
         f2.write(f'AUC score:\n')
+        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        dt, rf, sv, kn, nn = IzracunajPovprecje(brier_table)
+        f2.write(f'Brier score:\n')
         f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
 
 
@@ -282,14 +302,16 @@ if __name__ == '__main__':
     # citame podatoci i gi spremame za obrabotka
     table = pandas.read_csv("data/data.csv")
     table = ChangeValues(table)
+    minmaxscaler = MinMaxScaler()
     dummy_table = pandas.get_dummies(table)
+    dummy_table = pandas.DataFrame(minmaxscaler.fit_transform(dummy_table), columns=dummy_table.columns)
     # imame k-kratno proveruvanje, gi delime podatocite na ucni(80%) i testni(20%)
     redovi = list(range(0, len(dummy_table)))
     random.Random(0).shuffle(redovi)
     brojUcni = math.floor(len(redovi) * 0.8)
     brojTestni = len(redovi) - brojUcni
     brojIteracii = math.ceil(len(dummy_table) / brojTestni)
-    # helper(brojIteracii, dummy_table, brojTestni, redovi, "all")
+    helper(brojIteracii, dummy_table, brojTestni, redovi, "all")
     f.close()
     # k-kratno preveruvanje na pomalku atributi
     acc_table = []
@@ -299,5 +321,6 @@ if __name__ == '__main__':
     auc_table = []
     table2 = SkratiAtributi(table)
     dummy_table2 = pandas.get_dummies(table2)
+    dummy_table2 = pandas.DataFrame(minmaxscaler.fit_transform(dummy_table2), columns=dummy_table2.columns)
     helper(brojIteracii, dummy_table2, brojTestni, redovi, "not_all")
     f2.close()

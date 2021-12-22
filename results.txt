@@ -1,0 +1,188 @@
+Decision tree
+Iteracija: 0
+acc:0.733, sd:0.058, mae:0.267, rmse:0.516
+brier: 0.223
+sensitivity:0.808, specificity:0.676
+auc:0.802
+--------------------
+Random Forest
+Iteracija: 0
+acc:0.833, sd:0.049, mae:0.167, rmse:0.408
+brier: 0.113
+sensitivity:0.846, specificity:0.824
+auc:0.946
+--------------------
+SVM
+Iteracija: 0
+acc:0.883, sd:0.042, mae:0.117, rmse:0.342
+brier: 0.1
+sensitivity:0.885, specificity:0.882
+auc:0.945
+--------------------
+KNN
+Iteracija: 0
+acc:0.817, sd:0.05, mae:0.183, rmse:0.428
+brier: 0.11
+sensitivity:0.846, specificity:0.794
+auc:0.942
+--------------------
+Neural Networks
+Iteracija: 0
+acc:0.717, sd:0.059, mae:0.283, rmse:0.532
+brier: 0.272
+sensitivity:0.731, specificity:0.706
+auc:0.796
+--------------------
+Decision tree
+Iteracija: 1
+acc:0.883, sd:0.042, mae:0.117, rmse:0.342
+brier: 0.107
+sensitivity:0.815, specificity:0.939
+auc:0.915
+--------------------
+Random Forest
+Iteracija: 1
+acc:0.933, sd:0.032, mae:0.067, rmse:0.258
+brier: 0.093
+sensitivity:0.889, specificity:0.97
+auc:0.966
+--------------------
+SVM
+Iteracija: 1
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.091
+sensitivity:0.889, specificity:0.848
+auc:0.944
+--------------------
+KNN
+Iteracija: 1
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.099
+sensitivity:0.852, specificity:0.879
+auc:0.948
+--------------------
+Neural Networks
+Iteracija: 1
+acc:0.75, sd:0.056, mae:0.25, rmse:0.5
+brier: 0.25
+sensitivity:0.815, specificity:0.697
+auc:0.857
+--------------------
+Decision tree
+Iteracija: 2
+acc:0.683, sd:0.061, mae:0.317, rmse:0.563
+brier: 0.265
+sensitivity:0.552, specificity:0.806
+auc:0.695
+--------------------
+Random Forest
+Iteracija: 2
+acc:0.8, sd:0.052, mae:0.2, rmse:0.447
+brier: 0.138
+sensitivity:0.655, specificity:0.935
+auc:0.905
+--------------------
+SVM
+Iteracija: 2
+acc:0.783, sd:0.054, mae:0.217, rmse:0.465
+brier: 0.141
+sensitivity:0.621, specificity:0.935
+auc:0.901
+--------------------
+KNN
+Iteracija: 2
+acc:0.817, sd:0.05, mae:0.183, rmse:0.428
+brier: 0.14
+sensitivity:0.69, specificity:0.935
+auc:0.892
+--------------------
+Neural Networks
+Iteracija: 2
+acc:0.783, sd:0.054, mae:0.217, rmse:0.465
+brier: 0.216
+sensitivity:0.724, specificity:0.839
+auc:0.868
+--------------------
+Decision tree
+Iteracija: 3
+acc:0.733, sd:0.058, mae:0.267, rmse:0.516
+brier: 0.214
+sensitivity:0.656, specificity:0.821
+auc:0.781
+--------------------
+Random Forest
+Iteracija: 3
+acc:0.783, sd:0.054, mae:0.217, rmse:0.465
+brier: 0.139
+sensitivity:0.688, specificity:0.893
+auc:0.903
+--------------------
+SVM
+Iteracija: 3
+acc:0.783, sd:0.054, mae:0.217, rmse:0.465
+brier: 0.131
+sensitivity:0.688, specificity:0.893
+auc:0.923
+--------------------
+KNN
+Iteracija: 3
+acc:0.8, sd:0.052, mae:0.2, rmse:0.447
+brier: 0.136
+sensitivity:0.719, specificity:0.893
+auc:0.904
+--------------------
+Neural Networks
+Iteracija: 3
+acc:0.733, sd:0.058, mae:0.267, rmse:0.516
+brier: 0.267
+sensitivity:0.719, specificity:0.75
+auc:0.779
+--------------------
+Decision tree
+Iteracija: 4
+acc:0.719, sd:0.06, mae:0.281, rmse:0.53
+brier: 0.215
+sensitivity:0.783, specificity:0.676
+auc:0.777
+--------------------
+Random Forest
+Iteracija: 4
+acc:0.825, sd:0.051, mae:0.175, rmse:0.419
+brier: 0.156
+sensitivity:0.87, specificity:0.794
+auc:0.84
+--------------------
+SVM
+Iteracija: 4
+acc:0.772, sd:0.056, mae:0.228, rmse:0.478
+brier: 0.161
+sensitivity:0.783, specificity:0.765
+auc:0.841
+--------------------
+KNN
+Iteracija: 4
+acc:0.807, sd:0.053, mae:0.193, rmse:0.439
+brier: 0.159
+sensitivity:0.826, specificity:0.794
+auc:0.826
+--------------------
+Neural Networks
+Iteracija: 4
+acc:0.825, sd:0.051, mae:0.175, rmse:0.419
+brier: 0.175
+sensitivity:0.783, specificity:0.853
+auc:0.824
+--------------------
+Average results
+Accuracy:
+DT:0.75  RF:0.835  SVM:0.818  KNN:0.822  NN:0.762
+Standard deviation:
+DT:0.056  RF:0.048  SVM:0.05  KNN:0.05  NN:0.056
+Sensitivity:
+DT: 0.723  RF:0.79  SVM:0.773  KNN:0.787  NN:0.754
+Specificity:
+DT: 0.784  RF:0.883  SVM:0.865  KNN:0.859  NN:0.769
+AUC score:
+DT: 0.794  RF:0.912  SVM:0.911  KNN:0.902  NN:0.825
+Brier score:
+DT: 0.205  RF:0.128  SVM:0.125  KNN:0.129  NN:0.236
