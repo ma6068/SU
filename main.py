@@ -186,7 +186,7 @@ def NeuralNetworks(X_train, Y_train, X_test, Y_test, index, atributi):
         f.write('Neural Networks\n')
     else:
         f2.write('Neural Networks\n')
-    model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
+    model = MLPClassifier(random_state=0)
     AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neural_Networks", index, atributi)
 
 
@@ -245,16 +245,16 @@ def IzracunajIIspisiPovprecje(atributi):
         f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
         f.write(f'Sensitivity:\n')
-        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
         f.write(f'Specificity:\n')
-        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
         f.write(f'AUC score:\n')
-        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(brier_table)
         f.write(f'Brier score:\n')
-        f.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
 
     else:
         f2.write('Average results\n')
@@ -266,16 +266,16 @@ def IzracunajIIspisiPovprecje(atributi):
         f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(sensitivity_table)
         f2.write(f'Sensitivity:\n')
-        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(specificity_table)
         f2.write(f'Specificity:\n')
-        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(auc_table)
         f2.write(f'AUC score:\n')
-        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
         dt, rf, sv, kn, nn = IzracunajPovprecje(brier_table)
         f2.write(f'Brier score:\n')
-        f2.write(f'DT: {dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
+        f2.write(f'DT:{dt}  RF:{rf}  SVM:{sv}  KNN:{kn}  NN:{nn}\n')
 
 
 def helper(brojIteracii, dummy_table, brojTestni, redovi, atributi):
@@ -291,7 +291,9 @@ def helper(brojIteracii, dummy_table, brojTestni, redovi, atributi):
 
 def SkratiAtributi(tabela):
     site = ['age', 'sex', 'cpt', 'rbp', 'sch', 'fbs', 'res', 'mhr', 'eia', 'opk', 'pes', 'vca', 'tha', 'target']
-    arr = ['age', 'sex', 'cpt', 'mhr', 'eia', 'target']
+    # arr = ['tha', 'eia', 'cpt', 'pes', 'vca', 'mhr', 'target']   # Relief
+    # arr = ['cpt', 'sch', 'pes', 'vca', 'sex', 'tha', 'target']   # mRMR
+    arr = ['sex', 'vca', 'eia', 'cpt', 'pes', 'tha', 'target']   # LASSO FS
     for el in site:
         if el not in arr:
             tabela.drop([el], axis=1, inplace=True)

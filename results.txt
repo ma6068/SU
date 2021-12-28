@@ -28,10 +28,10 @@ auc:0.942
 --------------------
 Neural Networks
 Iteracija: 0
-acc:0.717, sd:0.059, mae:0.283, rmse:0.532
-brier: 0.272
-sensitivity:0.731, specificity:0.706
-auc:0.796
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.104
+sensitivity:0.885, specificity:0.853
+auc:0.931
 --------------------
 Decision tree
 Iteracija: 1
@@ -63,10 +63,10 @@ auc:0.948
 --------------------
 Neural Networks
 Iteracija: 1
-acc:0.75, sd:0.056, mae:0.25, rmse:0.5
-brier: 0.25
-sensitivity:0.815, specificity:0.697
-auc:0.857
+acc:0.85, sd:0.046, mae:0.15, rmse:0.387
+brier: 0.099
+sensitivity:0.852, specificity:0.848
+auc:0.938
 --------------------
 Decision tree
 Iteracija: 2
@@ -98,10 +98,10 @@ auc:0.892
 --------------------
 Neural Networks
 Iteracija: 2
-acc:0.783, sd:0.054, mae:0.217, rmse:0.465
-brier: 0.216
-sensitivity:0.724, specificity:0.839
-auc:0.868
+acc:0.85, sd:0.046, mae:0.15, rmse:0.387
+brier: 0.125
+sensitivity:0.759, specificity:0.935
+auc:0.898
 --------------------
 Decision tree
 Iteracija: 3
@@ -133,10 +133,10 @@ auc:0.904
 --------------------
 Neural Networks
 Iteracija: 3
-acc:0.733, sd:0.058, mae:0.267, rmse:0.516
-brier: 0.267
-sensitivity:0.719, specificity:0.75
-auc:0.779
+acc:0.8, sd:0.052, mae:0.2, rmse:0.447
+brier: 0.139
+sensitivity:0.688, specificity:0.929
+auc:0.924
 --------------------
 Decision tree
 Iteracija: 4
@@ -168,21 +168,21 @@ auc:0.826
 --------------------
 Neural Networks
 Iteracija: 4
-acc:0.825, sd:0.051, mae:0.175, rmse:0.419
-brier: 0.175
-sensitivity:0.783, specificity:0.853
-auc:0.824
+acc:0.842, sd:0.049, mae:0.158, rmse:0.397
+brier: 0.156
+sensitivity:0.87, specificity:0.824
+auc:0.845
 --------------------
 Average results
 Accuracy:
-DT:0.75  RF:0.835  SVM:0.818  KNN:0.822  NN:0.762
+DT:0.75  RF:0.835  SVM:0.818  KNN:0.822  NN:0.842
 Standard deviation:
-DT:0.056  RF:0.048  SVM:0.05  KNN:0.05  NN:0.056
+DT:0.056  RF:0.048  SVM:0.05  KNN:0.05  NN:0.047
 Sensitivity:
-DT: 0.723  RF:0.79  SVM:0.773  KNN:0.787  NN:0.754
+DT:0.723  RF:0.79  SVM:0.773  KNN:0.787  NN:0.811
 Specificity:
-DT: 0.784  RF:0.883  SVM:0.865  KNN:0.859  NN:0.769
+DT:0.784  RF:0.883  SVM:0.865  KNN:0.859  NN:0.878
 AUC score:
-DT: 0.794  RF:0.912  SVM:0.911  KNN:0.902  NN:0.825
+DT:0.794  RF:0.912  SVM:0.911  KNN:0.902  NN:0.907
 Brier score:
-DT: 0.205  RF:0.128  SVM:0.125  KNN:0.129  NN:0.236
+DT:0.205  RF:0.128  SVM:0.125  KNN:0.129  NN:0.125

@@ -1,188 +1,188 @@
 Decision tree
 Iteracija: 0
-acc:0.783, sd:0.054, mae:0.217, rmse:0.465
-brier: 0.161
-sensitivity:0.769, specificity:0.794
-auc:0.805
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.118
+sensitivity:0.808, specificity:0.912
+auc:0.901
 --------------------
 Random Forest
 Iteracija: 0
+acc:0.883, sd:0.042, mae:0.117, rmse:0.342
+brier: 0.101
+sensitivity:0.923, specificity:0.853
+auc:0.962
+--------------------
+SVM
+Iteracija: 0
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.091
+sensitivity:0.846, specificity:0.882
+auc:0.967
+--------------------
+KNN
+Iteracija: 0
+acc:0.833, sd:0.049, mae:0.167, rmse:0.408
+brier: 0.105
+sensitivity:0.885, specificity:0.794
+auc:0.94
+--------------------
+Neural Networks
+Iteracija: 0
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.09
+sensitivity:0.923, specificity:0.824
+auc:0.955
+--------------------
+Decision tree
+Iteracija: 1
+acc:0.883, sd:0.042, mae:0.117, rmse:0.342
+brier: 0.118
+sensitivity:0.852, specificity:0.909
+auc:0.897
+--------------------
+Random Forest
+Iteracija: 1
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.099
+sensitivity:0.852, specificity:0.879
+auc:0.951
+--------------------
+SVM
+Iteracija: 1
+acc:0.867, sd:0.044, mae:0.133, rmse:0.365
+brier: 0.091
+sensitivity:0.889, specificity:0.848
+auc:0.942
+--------------------
+KNN
+Iteracija: 1
+acc:0.9, sd:0.039, mae:0.1, rmse:0.316
+brier: 0.093
+sensitivity:0.889, specificity:0.909
+auc:0.944
+--------------------
+Neural Networks
+Iteracija: 1
+acc:0.85, sd:0.046, mae:0.15, rmse:0.387
+brier: 0.092
+sensitivity:0.889, specificity:0.818
+auc:0.952
+--------------------
+Decision tree
+Iteracija: 2
+acc:0.767, sd:0.055, mae:0.233, rmse:0.483
+brier: 0.196
+sensitivity:0.586, specificity:0.935
+auc:0.738
+--------------------
+Random Forest
+Iteracija: 2
 acc:0.8, sd:0.052, mae:0.2, rmse:0.447
-brier: 0.124
-sensitivity:0.731, specificity:0.853
+brier: 0.147
+sensitivity:0.655, specificity:0.935
+auc:0.88
+--------------------
+SVM
+Iteracija: 2
+acc:0.8, sd:0.052, mae:0.2, rmse:0.447
+brier: 0.142
+sensitivity:0.655, specificity:0.935
+auc:0.897
+--------------------
+KNN
+Iteracija: 2
+acc:0.817, sd:0.05, mae:0.183, rmse:0.428
+brier: 0.147
+sensitivity:0.69, specificity:0.935
+auc:0.86
+--------------------
+Neural Networks
+Iteracija: 2
+acc:0.817, sd:0.05, mae:0.183, rmse:0.428
+brier: 0.135
+sensitivity:0.69, specificity:0.935
+auc:0.886
+--------------------
+Decision tree
+Iteracija: 3
+acc:0.75, sd:0.056, mae:0.25, rmse:0.5
+brier: 0.172
+sensitivity:0.656, specificity:0.857
+auc:0.836
+--------------------
+Random Forest
+Iteracija: 3
+acc:0.767, sd:0.055, mae:0.233, rmse:0.483
+brier: 0.13
+sensitivity:0.719, specificity:0.821
 auc:0.924
 --------------------
 SVM
-Iteracija: 0
-acc:0.75, sd:0.056, mae:0.25, rmse:0.5
-brier: 0.186
-sensitivity:0.846, specificity:0.676
-auc:0.88
---------------------
-KNN
-Iteracija: 0
-acc:0.817, sd:0.05, mae:0.183, rmse:0.428
-brier: 0.136
-sensitivity:0.769, specificity:0.853
-auc:0.895
---------------------
-Neural Networks
-Iteracija: 0
-acc:0.817, sd:0.05, mae:0.183, rmse:0.428
-brier: 0.168
-sensitivity:0.769, specificity:0.853
-auc:0.813
---------------------
-Decision tree
-Iteracija: 1
+Iteracija: 3
 acc:0.783, sd:0.054, mae:0.217, rmse:0.465
-brier: 0.144
-sensitivity:0.852, specificity:0.727
-auc:0.872
---------------------
-Random Forest
-Iteracija: 1
-acc:0.75, sd:0.056, mae:0.25, rmse:0.5
-brier: 0.139
-sensitivity:0.667, specificity:0.818
-auc:0.883
---------------------
-SVM
-Iteracija: 1
-acc:0.8, sd:0.052, mae:0.2, rmse:0.447
-brier: 0.147
-sensitivity:0.741, specificity:0.848
-auc:0.882
+brier: 0.137
+sensitivity:0.688, specificity:0.893
+auc:0.91
 --------------------
 KNN
-Iteracija: 1
-acc:0.767, sd:0.055, mae:0.233, rmse:0.483
-brier: 0.143
-sensitivity:0.741, specificity:0.788
-auc:0.883
---------------------
-Neural Networks
-Iteracija: 1
-acc:0.767, sd:0.055, mae:0.233, rmse:0.483
-brier: 0.202
-sensitivity:0.778, specificity:0.758
-auc:0.791
---------------------
-Decision tree
-Iteracija: 2
-acc:0.65, sd:0.062, mae:0.35, rmse:0.592
-brier: 0.219
-sensitivity:0.724, specificity:0.581
-auc:0.744
---------------------
-Random Forest
-Iteracija: 2
-acc:0.733, sd:0.058, mae:0.267, rmse:0.516
-brier: 0.172
-sensitivity:0.552, specificity:0.903
-auc:0.821
---------------------
-SVM
-Iteracija: 2
-acc:0.7, sd:0.06, mae:0.3, rmse:0.548
-brier: 0.214
-sensitivity:0.621, specificity:0.774
-auc:0.828
---------------------
-KNN
-Iteracija: 2
-acc:0.75, sd:0.056, mae:0.25, rmse:0.5
-brier: 0.181
-sensitivity:0.586, specificity:0.903
-auc:0.805
---------------------
-Neural Networks
-Iteracija: 2
-acc:0.667, sd:0.061, mae:0.333, rmse:0.577
-brier: 0.26
-sensitivity:0.621, specificity:0.71
-auc:0.72
---------------------
-Decision tree
-Iteracija: 3
-acc:0.733, sd:0.058, mae:0.267, rmse:0.516
-brier: 0.21
-sensitivity:0.719, specificity:0.75
-auc:0.764
---------------------
-Random Forest
-Iteracija: 3
-acc:0.733, sd:0.058, mae:0.267, rmse:0.516
-brier: 0.156
-sensitivity:0.656, specificity:0.821
-auc:0.876
---------------------
-SVM
 Iteracija: 3
 acc:0.8, sd:0.052, mae:0.2, rmse:0.447
-brier: 0.157
-sensitivity:0.812, specificity:0.786
-auc:0.885
---------------------
-KNN
-Iteracija: 3
-acc:0.767, sd:0.055, mae:0.233, rmse:0.483
-brier: 0.141
-sensitivity:0.781, specificity:0.75
+brier: 0.146
+sensitivity:0.719, specificity:0.893
 auc:0.891
 --------------------
 Neural Networks
 Iteracija: 3
-acc:0.767, sd:0.055, mae:0.233, rmse:0.483
-brier: 0.175
-sensitivity:0.719, specificity:0.821
-auc:0.842
+acc:0.8, sd:0.052, mae:0.2, rmse:0.447
+brier: 0.132
+sensitivity:0.719, specificity:0.893
+auc:0.914
 --------------------
 Decision tree
 Iteracija: 4
-acc:0.579, sd:0.066, mae:0.421, rmse:0.649
-brier: 0.285
-sensitivity:0.522, specificity:0.618
-auc:0.664
+acc:0.807, sd:0.053, mae:0.193, rmse:0.439
+brier: 0.167
+sensitivity:0.783, specificity:0.824
+auc:0.825
 --------------------
 Random Forest
 Iteracija: 4
-acc:0.737, sd:0.059, mae:0.263, rmse:0.513
-brier: 0.2
-sensitivity:0.783, specificity:0.706
-auc:0.783
+acc:0.842, sd:0.049, mae:0.158, rmse:0.397
+brier: 0.155
+sensitivity:0.826, specificity:0.853
+auc:0.836
 --------------------
 SVM
 Iteracija: 4
-acc:0.737, sd:0.059, mae:0.263, rmse:0.513
-brier: 0.192
-sensitivity:0.783, specificity:0.706
-auc:0.793
+acc:0.772, sd:0.056, mae:0.228, rmse:0.478
+brier: 0.169
+sensitivity:0.826, specificity:0.735
+auc:0.831
 --------------------
 KNN
 Iteracija: 4
-acc:0.719, sd:0.06, mae:0.281, rmse:0.53
-brier: 0.205
-sensitivity:0.739, specificity:0.706
-auc:0.777
+acc:0.825, sd:0.051, mae:0.175, rmse:0.419
+brier: 0.153
+sensitivity:0.783, specificity:0.853
+auc:0.849
 --------------------
 Neural Networks
 Iteracija: 4
-acc:0.596, sd:0.066, mae:0.404, rmse:0.635
-brier: 0.287
-sensitivity:0.522, specificity:0.647
-auc:0.723
+acc:0.772, sd:0.056, mae:0.228, rmse:0.478
+brier: 0.159
+sensitivity:0.826, specificity:0.735
+auc:0.841
 --------------------
 Average results
 Accuracy:
-DT:0.706  RF:0.751  SVM:0.757  KNN:0.764  NN:0.723
+DT:0.815  RF:0.832  SVM:0.818  KNN:0.835  NN:0.821
 Standard deviation:
-DT:0.059  RF:0.057  SVM:0.056  KNN:0.055  NN:0.057
+DT:0.05  RF:0.048  SVM:0.05  KNN:0.048  NN:0.05
 Sensitivity:
-DT: 0.717  RF:0.678  SVM:0.761  KNN:0.723  NN:0.682
+DT:0.737  RF:0.795  SVM:0.781  KNN:0.793  NN:0.809
 Specificity:
-DT: 0.694  RF:0.82  SVM:0.758  KNN:0.8  NN:0.758
+DT:0.887  RF:0.868  SVM:0.859  KNN:0.877  NN:0.841
 AUC score:
-DT: 0.77  RF:0.857  SVM:0.854  KNN:0.85  NN:0.778
+DT:0.839  RF:0.911  SVM:0.909  KNN:0.897  NN:0.91
 Brier score:
-DT: 0.204  RF:0.143  SVM:0.152  KNN:0.145  NN:0.227
+DT:0.179  RF:0.127  SVM:0.125  KNN:0.129  NN:0.123
