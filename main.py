@@ -187,7 +187,7 @@ def NeuralNetworks(X_train, Y_train, X_test, Y_test, index, atributi):
     else:
         f2.write('Neural Networks\n')
     model = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(25,), random_state=0)
-    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neutral_Networks", index, atributi)
+    AllTheWork(X_train, Y_train, X_test, Y_test, model, "Neural_Networks", index, atributi)
 
 
 def CreateTrainAndTest(tabela, index, brTestni, redovi):
@@ -224,7 +224,7 @@ def IzracunajPovprecje(tabela):
             sv += terka[0]
         elif terka[1] == 'KNN':
             kn += terka[0]
-        elif terka[1] == 'Neutral_Networks':
+        elif terka[1] == 'Neural_Networks':
             nn += terka[0]
     dt = dt / counter
     rf = rf / counter
